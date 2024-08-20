@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Soru Cevaplama Sistemi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #questionContainer {
+            position: relative;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        #timer {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            margin: 10px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        #questionCounter {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        #questionText {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #questionDropdown {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #555;
+            background-color: #f9f9f9;
+            outline: none;
+            width: 100%;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        label {
+            display: inline-block;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="radio"]:checked + label {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        button {
+            background-color: blue;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: cyan;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="questionContainer">
+    <div id="timer">0:00</div>
+    <p id="questionCounter">Soru <span id="currentQuestionIndex">1</span> / <span id="totalQuestions"></span></p>
+    <select id="questionDropdown">
+        {% for i in range(1, questions | length + 1) %}
+            <option value="{{ i }}">Soru {{ i }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <p id="questionText"></p>
+    <br>
+    <input type="radio" id="trueOption" name="answer" value="Doğru" />
+    <label for="trueOption">Doğru</label>
+    <input type="radio" id="falseOption" name="answer" value="Yanlış" />
+    <label for="falseOption">Yanlış</label>
+    <br>
+    <button id="prevQuestionBtn" class="hidden">Önceki Soru</button>
+    <button id="nextQuestionBtn">Sıradaki Soru</button>
+    <button id="stopContinueTestBtn">Testi Durdur</button>
+    <button id="submitTestBtn" class="hidden">Testi Bitir</button>
+    <button id="saveTestBtn">Testi Kaydet</button>
+</div>
+
+<script>
+    let currentQuestionIndex = 0;
+    let isTestPaused = false;
+    let timerInterval;
+    let elapsedTime = 0;
+    const timerDisplay = document.getElementById("timer");
+    const questionText = document.getElementById("questionText");
+    const questionCounter = document.getElementById("questionCounter");
+    const questionDropdown = document.getElementById("questionDropdown");
+    const nextQuestionBtn = document.getElementById("nextQuestionBtn");
+    const prevQuestionBtn = document.getElementById("prevQuestionBtn");
+    const stopContinueTestBtn = document.getElementById("stopContinueTestBtn");
+    const submitTestBtn = document.getElementById("submitTestBtn");
+    const answers = []; // Cevapları saklamak için bir dizi
+
+    const loaded_answers = {{ patient_answers | tojson }}; // flask'tan string arrayi olarak verilen patient_answers'ı al ve arrayin düzgün okunabilmesi için jsona dönüştür
+
+    const questions = {{ questions | tojson }}; // flask'tan questionsu al ve bunu JavaScript arrayine dönüştür
+
+    function updateTimer() {
+        const minutes = Math.floor(elapsedTime / 60);
+        const seconds = elapsedTime % 60;
+        timerDisplay.textContent =
+            minutes.toString().padStart(2, "0") +
+            ":" +
+            seconds.toString().padStart(2, "0");
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            elapsedTime++;
+            updateTimer();
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    function loadTest() {
+        if (loaded_answers && loaded_answers.length > 0) {
+            elapsedTime = {{ elapsed_time | tojson }};
+
+            for (let i = 0; i < loaded_answers.length; i++) {
+                answers[i] = loaded_answers[i];
+            }
+        }
+    }
+
+    loadTest();
+
+    function displayQuestion() {
+        if (!isTestPaused) {
+            questionText.textContent = questions[currentQuestionIndex].Question;
+            document.getElementById("currentQuestionIndex").textContent = currentQuestionIndex + 1; // görüntülenen kaçıncı soru olduğunu göster
+            document.getElementById("totalQuestions").textContent = questions.length; // total soru sayısı
+            questionDropdown.selectedIndex = currentQuestionIndex; // dropdownda kaçıncı soruda olduğumuzu updatele
+
+            // Cevapları yükleyerek işaretli şıkkı göster
+            const currentAnswer = answers[currentQuestionIndex];
+            document.getElementById("trueOption").checked = currentAnswer === "Doğru"; // eğer current sorudaki cevap "Doğru"ysa o zaman trueOption'u checkle
+            document.getElementById("falseOption").checked = currentAnswer === "Yanlış"; // eğer current sorudaki cevap "Yanlış"sa o zaman falseOption'u checkle
+            updateButtons();
+        }
+    }
+
+    displayQuestion();
+
+    nextQuestionBtn.addEventListener("click", () => {
+        currentQuestionIndex++;
+        displayQuestion();
+        saveTest();
+    });
+
+    prevQuestionBtn.addEventListener("click", () => {
+        currentQuestionIndex--;
+        displayQuestion();
+        saveTest();
+    });
+
+    stopContinueTestBtn.addEventListener("click", () => {
+        isTestPaused = !isTestPaused;
+        if (!isTestPaused) {
+            startTimer();
+            stopContinueTestBtn.textContent = "Testi Durdur";
+        } else {
+            stopTimer();
+            stopContinueTestBtn.textContent = "Testi Devam Ettir";
+        }
+        updateButtons();
+    });
+
+    submitTestBtn.addEventListener("click", () => {
+        submitTest();
+
+        stopTimer();
+        const confirmation = confirm("Test tamamlandı. Cevaplarınız kaydedildi. Sayfayı kapatmak ister misiniz?");
+        if (confirmation) {
+            // Kullanıcı onay verdiyse, bu URL'yi değiştirebilirsiniz.
+            window.location.href = "http://www.google.com";
+        } else {
+            console.log("User canceled the page close.");
+        }
+        console.log(answers);
+        // Burada cevapları sunucuya gönderme işlemi yapılabilir.
+    });
+
+    // function to save the test data and submit it to the server
+    function submitTest() {
+        saveAllAnswers();
+
+        // construct the test data to send to the server
+        const testData = {
+            test_id: "{{ test_id }}",
+            answers: answers,
+            elapsedTime: elapsedTime,
+        };
+
+        // send an AJAX POST request to the server to submit the test data
+        fetch('/submit_test', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(testData)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Error submitting test data');
+            }
+        })
+        .then(data => {
+            console.log(data);
+            // perform any additional actions after successfully submitting the test data
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    const saveTestBtn = document.getElementById("saveTestBtn");
+    saveTestBtn.addEventListener("click", saveTest);
+
+    // function to save the test data and submit it to the server
+    function saveTest() {
+        saveAllAnswers();
+
+        // construct the test data to send to the server
+        const testData = {
+            test_id: "{{ test_id }}",
+            answers: answers,
+            elapsedTime: elapsedTime,
+        };
+
+        // send an AJAX POST request to the server to submit the test data
+        fetch('/save_test', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(testData)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Error submitting test data');
+            }
+        })
+        .then(data => {
+            console.log(data);
+            // perform any additional actions after successfully submitting the test data
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    questionDropdown.addEventListener("change", (event) => {
+        currentQuestionIndex = parseInt(event.target.value) - 1;
+        displayQuestion();
+    });
+
+    // Add event listeners to the radio buttons to save the selected answer
+    const trueOption = document.getElementById("trueOption");
+    const falseOption = document.getElementById("falseOption");
+
+    trueOption.addEventListener("change", saveAnswer);
+    falseOption.addEventListener("change", saveAnswer);
+
+    function updateButtons() {
+        prevQuestionBtn.style.display = currentQuestionIndex <= 0 ? "none" : "inline-block";
+        nextQuestionBtn.style.display = currentQuestionIndex >= questions.length - 1 ? "none" : "inline-block";
+        submitTestBtn.style.display = currentQuestionIndex < questions.length - 1 || isTestPaused ? "none" : "inline-block";
+    }
+
+    function saveAnswer() {
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        if (selectedOption) {
+            answers[currentQuestionIndex] = selectedOption.value;
+        }
+        else{
+            answers[currentQuestionIndex] = "Boş";
+        }
+    }
+
+    function saveAllAnswers() {
+      // loop through all questions and save the answer for each question, if it's not already saved.
+      for (let i = 0; i < questions.length; i++) {
+        if (answers[i] === undefined) {
+          const selectedOption = document.querySelector(`input[name="answer${i+1}"]:checked`);
+          if (selectedOption) {
+            answers[i] = selectedOption.value;
+          }
+          else {
+            answers[i] = "Boş";
+          }
+        }
+      }
+    }
+
+    // Start the timer immediately upon page load
+    startTimer();
+</script>
+</body>
+</html>

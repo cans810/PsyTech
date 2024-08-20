@@ -1,0 +1,25 @@
+FINISHED -> Login screen & register screen: Login screen need to have a button which will direct user to register page if user do not have any account registered.
+(AuthHandler class added for this.)
+
+proje dosyaları düzenlendi, app.py' classı ile run oluyor. loginhandler, registrationhandler ve authhandler artık sadece gerekli
+metodları barındırıyor, firebase admin sdk'i app.py de bir kere initialize ediliyor. login etme ve register etme authhandler'dan çağırılıyor.
+loginhandler, registrationhandler ve authhandler classları handlers dosyasında.
+Furkan'ın yaptığı register ve login frontend kısmı eklendi, styles.css static dosyasına taşındı
+
+15.03.2024
+basit dashboard arayüzü yapıldı, flaskteki "session" özelliği kullanılarak user sisteme log-in oldu mu olmadı mı öğrenebiliyoruz.
+basit profil sayfası yapıldı, burda kullanıcının emaili ve şifresi görünüyor, buraya logout butonu eklendi.
+
+session ne:
+session, Flask içinde bir kullanıcının tarayıcı aracılığıyla bir istekte bulunduğu ve yanıt aldığı süre boyunca bilgi saklamak için kullanılan bir nesnedir.
+Oturum, bir kullanıcının bir web sitesiyle etkileşimde bulunurken geçerli durumunu ve kimliğini korumak için kullanılır. Örneğin, bir kullanıcı bir web uygulamasına giriş yaptığında,
+oturum genellikle kullanıcının kimliğini (örneğin kullanıcı adı veya e-posta adresi gibi), belirli bir süre boyunca geçerli olacak şekilde saklar.
+Bu, kullanıcının uygulama içinde gezinirken kimlik doğrulaması yapılmasını kolaylaştırır. Flask'ta, oturumlar varsayılan olarak bir kullanıcının tarayıcısında bir çerez (cookie) olarak saklanır.
+Ancak, oturum verilerini başka yerlerde saklamak veya özelleştirmek de mümkündür.
+Özetle, Flask'taki oturumlar, bir kullanıcının web uygulamasıyla etkileşim sırasında geçerli durumunu ve kimliğini korumak için kullanılan bir mekanizmadır.
+
+session kullanabilmek için "app.secret_key" eklendi bu da:
+`app.secret_key` anahtarını Flask uygulamanıza eklemeniz, Flask'ın oturum yönetimi mekanizmasını etkinleştirir ve bu anahtarı şifreleme ve
+şifreli oturum çerezleri oluşturma gibi kriptografik işlemler için kullanmasını sağlar.
+Bu, uygulamanızın oturumlarının güvenliğini artırır. Anahtarın güvenliği maksimize etmek için güçlü ve benzersiz bir gizli anahtar seçmek önemlidir.
+Bir kez ayarlandıktan sonra, Flask gerisini yönetir ve oturum verilerinin kötü niyetli saldırılardan korunması ve güvenli bir şekilde saklanmasını sağlar.

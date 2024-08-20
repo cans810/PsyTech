@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+        <header>
+        <div class="container">
+            <nav>
+                <a href="#">PSYTECH</a>
+            </nav>
+        </div>
+    </header>
+        <div class="container">
+        <h1 class="open-sans-500">Giriş Yap</h1>
+        <form id="login-form" action="/login" method="POST">
+            <div class="input-icons">
+                <i class="fa fa-envelope icon"></i>
+                <input type="text" class="centerPlace open-sans-500" name="email" placeholder="E-mail" required>
+            </div>
+            <div class="input-icons">
+                <i class="fa fa-key icon"></i>
+                <input type="password" class="centerPlace open-sans-500" name="password" placeholder="Şifre" required>
+            </div>
+            <div class="error-message" id="error-message"></div>
+            <input type="submit" class="open-sans-500" id="login-btn" value="Giriş Yap">
+        </form>
+        <!-- hesap oluştur butonu -->
+            <form action="/register" method="get">
+                <button type="submit" class="open-sans-500" id="create-account-btn">Hesap Oluştur</button>
+            </form>
+        <div id="resetContainer" class="open-sans-500">
+            <p id="resetText">Giriş Yapamıyor Musunuz?</p>
+            <p id="resetPass"><a href="{{ url_for('forgot_password') }}">Şifremi Unuttum</a></p>
+        </div>
+    </div>
+
+    <!-- Doğrulama Pop-up - Login Screen İçin Gizli -->
+    <div class="verification-popup" id="verification-popup" style="display: none;">
+        <h2>Verification</h2>
+        <input type="text" name="email_verification_code" placeholder="Email Verification Code" required>
+        <input type="text" name="phone_verification_code" placeholder="Phone Verification Code" required>
+        <button id="verify-btn">Verify</button>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danışan Ekle</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+</head>
+<body class="open-sans-500">
+        <header>
+        <div class="container">
+            <nav>
+                <a href="#">Danışan Ekle</a>
+            </nav>
+        </div>
+    </header>
+        <div class="container">
+        <form action="{{ url_for('add_patient') }}" method="POST">
+            <label for="patient_name">Danışan Adı:</label>
+            <input type="text" class="open-sans-500" id="patient_name" name="patient_name" placeholder="Danışan Adı" required><br><br>
+
+            <label for="gender">Cinsiyet Seçin:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Erkek</option>
+                <option value="female">Kadın</option>
+                <option value="other">Diğer</option>
+            </select><br><br>
+
+            <label for="birthday">Doğum Tarihi:</label>
+            <input type="date" id="birthday" name="birthday" required><br><br>
+
+            <button type="submit" class="patient-btn">Danışan Ekle</button>
+            <a href="/main_page"><button class="lookback-btn" type="button">Kontrol Paneline Geri Dön</button> </a>
+        </form>
+    </div>
+</body>
+</html>

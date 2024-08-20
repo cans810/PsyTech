@@ -1,0 +1,323 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F0F8FF;
+}
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    
+}
+input[type="submit"] {
+    width: 100%;
+    padding: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+}
+#create-account-btn{
+    width: 45%; /* Adjust width as needed */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin-left: 30%;
+    margin-top: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;    
+}
+#login-btn{
+    width: 45%; /* Adjust width as needed */
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 30%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.patient-btn{
+    width: 45%; /* Adjust width as needed */
+    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin-left: 5%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.lookback-btn{
+    width: 45%; /* Adjust width as needed */
+    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: steelblue;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.verification-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+.input-icons {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-icons i {
+    position: absolute;
+}
+
+.icon {
+    padding: 10px;
+    color: gray;
+    min-width: 50px;
+    text-align: center;
+}
+
+.centerPlace {
+    text-align: center;
+  }
+  
+  ::-webkit-input-placeholder {
+    text-align: center;
+  }
+  
+  :-moz-placeholder {
+    text-align: center;
+  }
+
+  #resetPass {
+    max-width: 50%;
+    color: red;
+  }
+
+  #resetText{
+    max-width:50%;
+    display: inline-block;
+    margin: 0;
+  }
+
+  #resetPass{
+      display: inline-block;
+      margin: 0;
+  }
+
+  #resetPass a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+
+  #resetContainer{
+    margin-top: 5%;
+      text-align: center;
+  }
+  
+  .open-sans-500 {
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+  }
+
+  .margin-top-10{
+      margin-top: 10%;
+  }
+
+  .margin-top-20{
+      margin-top: 20%;
+  }
+
+  .font-size-10{
+      font-size: 10px;
+  }
+
+  .color-red{
+      color: red;
+  }
+  .menu-link{
+      color:inherit;
+      text-decoration: inherit;
+  }
+  .account-info{
+      color:mediumpurple;
+      text-decoration: inherit;
+  }
+  .profile-btn {
+  background: #e8e8e8;
+  background-image: -webkit-linear-gradient(top, #e8e8e8, #e8e8e8);
+  background-image: -moz-linear-gradient(top, #e8e8e8, #e8e8e8);
+  background-image: -ms-linear-gradient(top, #e8e8e8, #e8e8e8);
+  background-image: -o-linear-gradient(top, #e8e8e8, #e8e8e8);
+  background-image: linear-gradient(to bottom, #e8e8e8, #e8e8e8);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  margin-top: 2%;
+  color: #4200bd;
+  font-size: 15px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+
+}
+
+.profile-btn:hover {
+  background: #ffffff;
+  background-image: -webkit-linear-gradient(top, #ffffff, #d6d6d6);
+  background-image: -moz-linear-gradient(top, #ffffff, #d6d6d6);
+  background-image: -ms-linear-gradient(top, #ffffff, #d6d6d6);
+  background-image: -o-linear-gradient(top, #ffffff, #d6d6d6);
+  background-image: linear-gradient(to bottom, #ffffff, #d6d6d6);
+  text-decoration: none;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F0F8FF;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: #8e3232; /* Dark blue */
+    color: #40E0D0; /* Turquoise */
+}
+
+header .container {
+    display: flex;
+    justify-content: center; /* Center the items */
+    align-items: center;
+    background-color: #8e3232; /* Ensure it matches header's color */
+    padding: 10px 0;
+}
+
+nav {
+    display: flex;
+    justify-content: center; /* Center the items */
+    width: 100%;
+}
+
+nav a {
+    font-size: 30px;
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 10px 20px; /* Add some padding */
+}
+
+header .button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: -5%;
+}
+
+.hero {
+    background-color: #F0F8FF; /* Alice blue */
+    padding: 20px 0;
+}
+
+.hero .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.hero h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;;
+}
+
+.hero p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+.button {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+footer {
+    background-color: #191970;
+    color: #40E0D0;
+    text-align: center;
+    padding: 20px 0;
+}
+
+footer .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+}

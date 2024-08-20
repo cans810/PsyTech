@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Oluştur</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+</head>
+<body class="open-sans-500">
+    <div class="container">
+        <h1>Test Oluştur</h1>
+        <form id="dueDateForm" action="{{ url_for('create_test', patient_id=patient.id) }}" method="POST">
+            <label for="dueDate">Testin Kapanış Tarihi ve Saati:</label>
+            <input type="date" id="dueDate" name="dueDate" required>
+            <input type="time" id="dueHour" name="dueHour" required>
+            <button type="submit" class="patient-btn">Testi Oluştur ve Hastaya Ata</button>
+            <a href="/main_page"><button class="lookback-btn" type="button">Kontrol Paneline Geri Dön</button> </a>
+        </form>
+    </div>
+</body>
+</html>

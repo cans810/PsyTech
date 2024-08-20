@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Appointment Scheduler</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#appointments-list {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+#appointments {
+  list-style-type: none;
+  padding: 0;
+}
+
+#appointments li {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+</style>
+<body>
+  <h1>Doctor Appointment Scheduler</h1>
+  
+  <div class="form-container">
+    <h2>Add Appointment</h2>
+    <form id="appointment-form">
+      <label for="doctor">Doctor:</label>
+      <input type="text" id="doctor" required>
+      <label for="patient">Patient:</label>
+      <input type="text" id="patient" required>
+      <label for="datetime">Date and Time:</label>
+      <input type="datetime-local" id="datetime" required>
+      <button type="submit">Add Appointment</button>
+    </form>
+  </div>
+
+  <div id="appointments-list">
+    <h2>Appointments</h2>
+    <ul id="appointments"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

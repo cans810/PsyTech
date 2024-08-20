@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danışanlar</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      color: #333;
+      text-align: center;
+    }
+
+    .button {
+      background-color: #4caf50;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .button:hover {
+      background-color: #45a049;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background-color: #fff;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .removeButton {
+      background-color: #f44336;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 5%;
+      border-radius: 5px;
+    }
+
+    .removeButton:hover {
+      background-color: #d32f2f;
+    }
+
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $(".removeButton").click(function () {
+        var confirmDelete = confirm("Hastanızı silmek istiyor musunuz?");
+        if (confirmDelete) {
+          $(this).closest("form").submit();
+        } else {
+          return false;
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <header>
+        <div class="container">
+            <nav>
+                <a href="#">Danışanlar</a>
+            </nav>
+        </div>
+    </header>
+  <div class="container">
+  <a href="{{ url_for('add_patient') }}"><button class="button">Yeni Danışan Ekle</button></a>
+    <a href="/main_page"><button class="button" type="button">Anasayfaya Geri Dön</button> </a>
+  <table>
+    <thead>
+    <tr>
+      <th>ISIM</th>
+      <th>ID</th>
+      <th>CINSIYET</th>
+      <th>D.TARİHİ</th>
+      <th>Tanımlanan Test</th>
+      <th>Testin Durumu</th>
+      <th>Testte Geçirilen Süre</th>
+      <th>Testin Kapanış Tarihi</th>
+      <th></th>
+      <!-- Silme butonu için boş hücre -->
+    </tr>
+    </thead>
+    <tbody>
+    {% for patient in patients %}
+      {% if patient.id %}
+        <tr>
+          <td>{{ patient.name }}</td>
+          <td>{{ patient.id }}</td>
+          <td>{{ patient.gender }}</td>
+          <td>{{ patient.birthday }}</td>
+          <td>{{ patient.current_test_assigned }}</td>
+          <td>{{ patient.finished_current_test }}</td>
+          <td>
+              <!-- Span to display the formatted time -->
+              <span id="time_{{ patient.id }}"></span>
+          </td>
+          <td>{{ patient.due_date ~ ", " ~ patient.due_hour }}</td>
+          <td>
+            <form
+                action="{{ url_for('enter_test_info_popup', patient_id=patient.id) }}"
+                method="GET"
+                style="display: inline"
+            >
+                <input type="hidden" name="patient_id" value="{{ patient.id }}" />
+                <button class="button" type="submit">Test Linki Oluştur</button>
+            </form>
+            {% if patient.finished_current_test != "Bitmedi" %}
+                <form
+                    action="{{ url_for('see_test_results', patient_id=patient.id) }}"
+                    method="POST"
+                    style="display: inline"
+                >
+                    <button class="button" type="submit">Test Sonuçlarını Gör</button>
+                </form>
+            {% endif %}
+            {% if patient.current_test_assigned != "" %}
+                <form
+                    action="{{ url_for('remove_test_link', patient_id=patient.id) }}"
+                    method="POST"
+                    style="display: inline"
+                >
+                    <button class="button" type="submit">Test Linki Sil</button>
+                </form>
+            {% endif %}
+            <form
+                action="{{ url_for('remove_patient', patient_id=patient.id) }}"
+                method="POST"
+                style="display: inline"
+            >
+                <button class="removeButton" type="button">Hastayı Sil</button>
+            </form>
+        </td>
+        </tr>
+        <script>
+            // JavaScript code to format and display the time
+            const timeElapsed = {{ patient.time_elapsed }}; // Get time in seconds
+            const hours = Math.floor(timeElapsed / 3600);
+            const minutes = Math.floor((timeElapsed % 3600) / 60);
+            const seconds = timeElapsed % 60;
+
+            const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            document.getElementById(`time_{{ patient.id }}`).textContent = formattedTime;
+        </script>
+      {% endif %}
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

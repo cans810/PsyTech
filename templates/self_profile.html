@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <style>
+        .center {
+            text-align: center;
+        }
+        /* Style for the show/hide button */
+        .password-toggle {
+            cursor: pointer;
+            font-size: 12px;
+            color: #666;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+        <header>
+        <div class="container">
+            <nav>
+                <a href="#">PROFIL</a>
+            </nav>
+        </div>
+    </header>
+        <div class="container">
+        <div class="input-icons">
+            <i class="fa fa-envelope icon"></i>
+            <p class="open-sans-500 centerPlace">Email: {{ user_email }}</p>
+        </div>
+        <div class="input-icons">
+            <i class="fa fa-key icon"></i>
+            <p class="open-sans-500 centerPlace">
+                Password: 
+                <!-- Hidden password field -->
+                <span id="passwordField">************</span>
+                <!-- Show/hide password button -->
+                <br>
+                <span class="password-toggle" id="passwordToggle" style="color: blue;">Show Password</span>
+            </p>
+        </div>
+        <div class="center">
+            <a href="/main_page"><button class="profile-btn">Kontrol Paneline Dön</button></a>
+            <a href="/logout"><button class="profile-btn">Hesaptan Çıkış Yap</button></a>
+            <a href="/change_password"><button class="profile-btn">Şifre Değiştir</button></a>
+        </div>
+    </div>
+
+    <script>
+        const passwordField = document.getElementById('passwordField');
+        const passwordToggle = document.getElementById('passwordToggle');
+
+        passwordToggle.addEventListener('click', () => {
+            // Toggle the visibility of the password field
+            const isPasswordFieldVisible = passwordField.textContent === '{{ user_password }}';
+            passwordField.textContent = isPasswordFieldVisible ? '************' : '{{ user_password }}';
+            // Change the button text accordingly
+            passwordToggle.textContent = isPasswordFieldVisible ? 'Show Password' : 'Hide Password';
+        });
+    </script>
+</body>
+</html>
